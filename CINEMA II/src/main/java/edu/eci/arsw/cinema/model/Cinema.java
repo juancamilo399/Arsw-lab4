@@ -52,10 +52,13 @@ public class Cinema {
     }
 
     public void replaceFunction(CinemaFunction function) {
+        int index=0;
         for(CinemaFunction cFunction : functions){
             if(cFunction.getMovie().getName().equals(function.getMovie().getName())){
-                cFunction = function;
+                index=functions.indexOf(cFunction);
             }
         }
+        functions.remove(index);
+        functions.add(function);
     }
 }

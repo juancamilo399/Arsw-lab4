@@ -7,14 +7,93 @@ package edu.eci.arsw.cinema.controllers;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import edu.eci.arsw.cinema.model.Cinema;
+import edu.eci.arsw.cinema.persistence.CinemaException;
+import edu.eci.arsw.cinema.persistence.CinemaPersistenceException;
+import edu.eci.arsw.cinema.persistence.CinemaPersitence;
+import edu.eci.arsw.cinema.services.CinemaServices;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
 /**
  *
  * @author cristian
  */
+
+@RestController
+@RequestMapping(value = "/cinemas")
 public class CinemaAPIController {
-    
+
+    @Autowired
+    @Qualifier("cinemaService")
+    CinemaServices cs=null;
+
+
+    @GetMapping("/{name}/{date}/{movieName}")
+    public  ResponseEntity<?> GetFunctions(@PathVariable String name , @PathVariable String date , @PathVariable String movieName) {
+        try {
+            return new ResponseEntity<>(cs.getFunctionByName(cs.getFunctionsbyCinemaAndDate(name,date),movieName), HttpStatus.ACCEPTED);
+        } catch (CinemaPersistenceException ex) {
+            Logger.getLogger(CinemaAPIController.class.getName()).log(Level.SEVERE, null, ex);
+            ResponseEntity response = null;
+            if(ex.getMessage().equals("No existe una función de esa pelicula")){
+                response = new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+            }
+            if(ex.getMessage().equals("Alguno de los parametros es nulo")){
+                response = new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+            }
+            return response;
+        }
+        // ...
+    }
+
+    @GetMapping("/{name}/{date}")
+    public  ResponseEntity<?> GetFunctions(@PathVariable String name , @PathVariable String date) {
+        try {
+            return new ResponseEntity<>(cs.getFunctionsbyCinemaAndDate(name,date), HttpStatus.ACCEPTED);
+        } catch (CinemaPersistenceException ex) {
+            Logger.getLogger(CinemaAPIController.class.getName()).log(Level.SEVERE, null, ex);
+            ResponseEntity response = null;
+            if(ex.getMessage().equals(ex.getMessage().equals("Funciones no encontradas para ese cinema y esa fecha"))){
+                response = new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+            }
+            if(ex.getMessage().equals("Alguno de los parametros es nulo")){
+                response = new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+            }
+            return response;
+        }
+        // ...
+    }
+    @GetMapping("/{name}")
+    public  ResponseEntity<?> GetFunctions(@PathVariable String name) {
+        try {
+            return new ResponseEntity<>(cs.getCinemaByName(name).getFunctions(), HttpStatus.ACCEPTED);
+        } catch (CinemaPersistenceException ex) {
+            Logger.getLogger(CinemaAPIController.class.getName()).log(Level.SEVERE, null, ex);
+            ResponseEntity response = null;
+            if(ex.getMessage().equals("El cinema no existe")){
+                response = new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+            }
+            if(ex.getMessage().equals("El nombre del cinema no puede ser nulo")){
+                response = new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+            }
+            return response;
+        }
+        // ...
+    }
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<?> GetCinemas() {
+        try {
+            return new ResponseEntity<>(cs.getAllCinemas(), HttpStatus.ACCEPTED);
+        } catch (CinemaPersistenceException ex) {
+            Logger.getLogger(CinemaAPIController.class.getName()).log(Level.SEVERE, null, ex);
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.NO_CONTENT);
+        }
+    }
 }

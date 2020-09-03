@@ -37,7 +37,7 @@ public class CinemaServices {
         return cf.filter(functions, filtro);
     }
     
-    public Set<Cinema> getAllCinemas(){
+    public Set<Cinema> getAllCinemas() throws CinemaPersistenceException {
         return cps.getCinemas();
     }
     
@@ -47,7 +47,7 @@ public class CinemaServices {
      * @return the cinema of the given name created by the given author
      * @throws CinemaException
      */
-    public Cinema getCinemaByName(String name) throws CinemaException, CinemaPersistenceException {
+    public Cinema getCinemaByName(String name) throws CinemaPersistenceException {
         return cps.getCinema(name);
     }
     
@@ -62,5 +62,9 @@ public class CinemaServices {
 
     public void saveCinema(Cinema cinema) throws CinemaPersistenceException {
         cps.saveCinema(cinema);
+    }
+
+    public CinemaFunction getFunctionByName(List<CinemaFunction> functions , String name) throws CinemaPersistenceException {
+        return cps.getFunctionByName(functions,name);
     }
 }

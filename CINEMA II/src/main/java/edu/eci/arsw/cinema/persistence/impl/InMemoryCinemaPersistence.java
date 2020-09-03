@@ -29,12 +29,31 @@ public class InMemoryCinemaPersistence implements CinemaPersitence{
     public InMemoryCinemaPersistence() {
         //load stub data
         String functionDate = "2018-12-18 15:30";
+        String functionDate2 = "2013-12-18 15:30";
         List<CinemaFunction> functions= new ArrayList<>();
         CinemaFunction funct1 = new CinemaFunction(new Movie("SuperHeroes Movie","Action"),functionDate);
-        CinemaFunction funct2 = new CinemaFunction(new Movie("The Night","Horror"),functionDate);
+        CinemaFunction funct2 = new CinemaFunction(new Movie("The Night","Horror"),functionDate2);
         functions.add(funct1);
         functions.add(funct2);
         Cinema c=new Cinema("cinemaX",functions);
+
+        functionDate = "2020-12-18 14:30";
+        functions= new ArrayList<>();
+        funct1 = new CinemaFunction(new Movie("Spiderman","Drama"),functionDate);
+        funct2 = new CinemaFunction(new Movie("IT","Adventure"),functionDate);
+        functions.add(funct1);
+        functions.add(funct2);
+        Cinema c2=new Cinema("cinemaY",functions);
+        cinemas.put("cinemaY",c2);
+
+        functionDate = "2015-11-13 15:30";
+        functions= new ArrayList<>();
+        funct1 = new CinemaFunction(new Movie("Deadpool","Funny"),functionDate);
+        funct2 = new CinemaFunction(new Movie("The Avengers","Action"),functionDate);
+        functions.add(funct1);
+        functions.add(funct2);
+        Cinema c3=new Cinema("cinemaZ",functions);
+        cinemas.put("cinemaZ",c3);
         cinemas.put("cinemaX", c);
     }    
 
@@ -65,6 +84,9 @@ public class InMemoryCinemaPersistence implements CinemaPersitence{
         List<CinemaFunction> selected_functions=selectedCinema.getFunctions().stream()
                 .filter(f -> f.getDate().equals(date))
                 .collect(Collectors.toList());
+        if(selected_functions.size()==0){
+            throw new CinemaPersistenceException("Funciones no encontradas para ese cinema y esa fecha");
+        }
         return selected_functions;
     }
 
@@ -93,8 +115,24 @@ public class InMemoryCinemaPersistence implements CinemaPersitence{
     }
 
     @Override
-    public Set<Cinema> getCinemas() {
+    public Set<Cinema> getCinemas() throws CinemaPersistenceException {
+        if(cinemas.size()==0){
+            throw new CinemaPersistenceException("No existen cinemas");
+        }
         return new HashSet(cinemas.values());
     }
 
+    @Override
+    public CinemaFunction getFunctionByName(List<CinemaFunction> functions, String name) throws CinemaPersistenceException {
+        CinemaFunction cinemaFunction = null;
+        for(CinemaFunction function : functions){
+            if(function.getMovie().getName().equals(name)){
+                cinemaFunction=function;
+            }
+        }
+        if(cinemaFunction==null){
+            throw new CinemaPersistenceException("No existe una función de esa pelicula");
+        }
+        return cinemaFunction;
+    }
 }

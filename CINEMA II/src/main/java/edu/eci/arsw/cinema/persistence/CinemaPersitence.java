@@ -56,5 +56,14 @@ public interface CinemaPersitence {
      * @return All the cinemas
      */
 
-    public Set<Cinema> getCinemas();
+    public Set<Cinema> getCinemas() throws CinemaPersistenceException;
+
+    /**
+     *
+     * @param functions
+     * @param name
+     * @return The function with that name
+     */
+
+    CinemaFunction getFunctionByName(List<CinemaFunction> functions, String name) throws CinemaPersistenceException;
 }

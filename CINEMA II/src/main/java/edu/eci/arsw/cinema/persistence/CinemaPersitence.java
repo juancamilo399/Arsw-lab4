@@ -66,4 +66,18 @@ public interface CinemaPersitence {
      */
 
     CinemaFunction getFunctionByName(List<CinemaFunction> functions, String name) throws CinemaPersistenceException;
+
+    /**
+     *
+     * @param cinema the cinema on that the function is going to be added
+     * @param function to be added
+     */
+    void addFunctionToCinema(Cinema cinema, CinemaFunction function) throws CinemaPersistenceException;
+
+    /**
+     *
+     * @param cinema he cinema on that the function is going to be modified or added
+     * @param function to be modified or added
+     */
+    void modifieFunctionOfACinema(Cinema cinema, CinemaFunction function) throws CinemaPersistenceException;
 }

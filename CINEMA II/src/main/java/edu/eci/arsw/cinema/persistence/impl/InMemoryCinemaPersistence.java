@@ -135,4 +135,34 @@ public class InMemoryCinemaPersistence implements CinemaPersitence{
         }
         return cinemaFunction;
     }
+
+    @Override
+    public void addFunctionToCinema(Cinema cinema, CinemaFunction function) throws CinemaPersistenceException {
+        if(!cinemas.containsKey(cinema.getName())){
+            throw new CinemaPersistenceException("El cinema no existe");
+        }
+        for(CinemaFunction cFunction : cinema.getFunctions()){
+            if(cFunction.equals(function)){
+                throw new CinemaPersistenceException("La función ya existe en ese cinema");
+            }
+        }
+        cinema.addFunction(function);
+    }
+
+    @Override
+    public void modifieFunctionOfACinema(Cinema cinema, CinemaFunction function) throws CinemaPersistenceException {
+        if(!cinemas.containsKey(cinema.getName())){
+            throw new CinemaPersistenceException("El cinema no existe");
+        }
+        boolean replaced = false;
+        for(CinemaFunction cFunction : cinema.getFunctions()){
+            if(cFunction.getMovie().getName().equals(function.getMovie().getName())){
+                cinema.replaceFunction(function);
+                replaced = true;
+            }
+        }
+        if(!replaced){
+            addFunctionToCinema(cinema,function);
+        }
+    }
 }

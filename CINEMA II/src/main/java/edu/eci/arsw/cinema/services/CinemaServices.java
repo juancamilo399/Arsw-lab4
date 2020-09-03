@@ -67,4 +67,12 @@ public class CinemaServices {
     public CinemaFunction getFunctionByName(List<CinemaFunction> functions , String name) throws CinemaPersistenceException {
         return cps.getFunctionByName(functions,name);
     }
+
+    public void addFunctionToCinema(Cinema cinema , CinemaFunction function) throws CinemaPersistenceException {
+        cps.addFunctionToCinema(cinema , function);
+    }
+
+    public void modifieFunctionOfACinema(Cinema cinema, CinemaFunction function) throws CinemaPersistenceException {
+        cps.modifieFunctionOfACinema(cinema,function);
+    }
 }

@@ -39,11 +39,23 @@ public class Cinema {
         this.functions = functions;
     }
 
+    public void addFunction(CinemaFunction function){
+        this.functions.add(function);
+    }
+
     @Override
     public String toString() {
         return "Cinema{" +
                 "name='" + name + '\'' +
                 ", functions=" + functions +
                 '}';
+    }
+
+    public void replaceFunction(CinemaFunction function) {
+        for(CinemaFunction cFunction : functions){
+            if(cFunction.getMovie().getName().equals(function.getMovie().getName())){
+                cFunction = function;
+            }
+        }
     }
 }

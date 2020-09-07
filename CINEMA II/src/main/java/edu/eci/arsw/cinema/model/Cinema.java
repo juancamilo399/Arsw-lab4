@@ -5,7 +5,9 @@
  */
 package edu.eci.arsw.cinema.model;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  *
@@ -13,12 +15,12 @@ import java.util.List;
  */
 public class Cinema {
     private String name;
-    private List<CinemaFunction> functions; 
+    private CopyOnWriteArrayList functions;
     
     
     public Cinema(){}
     
-    public Cinema(String name,List<CinemaFunction> functions){
+    public Cinema(String name,CopyOnWriteArrayList<CinemaFunction> functions){
         this.name=name;
         this.functions=functions;
     }
@@ -31,11 +33,11 @@ public class Cinema {
         this.name = name;
     }
 
-    public List<CinemaFunction> getFunctions() {
+    public CopyOnWriteArrayList<CinemaFunction> getFunctions() {
         return this.functions;
     }
 
-    public void setSchedule(List<CinemaFunction> functions) {
+    public void setSchedule(CopyOnWriteArrayList<CinemaFunction> functions) {
         this.functions = functions;
     }
 
@@ -53,9 +55,11 @@ public class Cinema {
 
     public void replaceFunction(CinemaFunction function) {
         int index=0;
-        for(CinemaFunction cFunction : functions){
-            if(cFunction.getMovie().getName().equals(function.getMovie().getName())){
-                index=functions.indexOf(cFunction);
+        Iterator<CinemaFunction> iterator = functions.iterator();
+        while(iterator.hasNext()){
+            CinemaFunction nextfunction = iterator.next();
+            if(nextfunction.getMovie().getName().equals(function.getMovie().getName())){
+                index=functions.indexOf(nextfunction);
             }
         }
         functions.remove(index);

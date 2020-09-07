@@ -64,7 +64,16 @@
 1. El componente CinemaRESTAPI funcionará en un entorno concurrente. Es decir, atederá múltiples peticiones simultáneamente (con el stack de aplicaciones usado, dichas peticiones se atenderán por defecto a través múltiples de hilos). Dado lo anterior, debe hacer una revisión de su API (una vez funcione), e identificar:
 
     1. Qué condiciones de carrera se podrían presentar?
+	    * Al modificar o insertar funciones mientras otro usuario realiza consultas que involucren dicha funcion, puede ocurrir que la consulta no tenga la informacion mas reciente.
 
-    2. Cuales son las respectivas regiones críticas?
 
-Ajuste el código para suprimir las condiciones de carrera. Tengan en cuenta que simplemente sincronizar el acceso a las operaciones de persistencia/consulta DEGRADARÁ SIGNIFICATIVAMENTE el desempeño de API, por lo cual se deben buscar estrategias alternativas.
+    3. Cuales son las respectivas regiones críticas?
+	    * Cuando se realizan operaciones sobre la lista de funciones de un cine.
+	    * Cuando se realizan operaciones sobre la lista de asientos.
+	    * Cuando se realizan operaciones sobre el hashMap de los cines.
+	 
+	 Ajuste el código para suprimir las condiciones de carrera. Tengan en cuenta que simplemente sincronizar el acceso a las operaciones de persistencia/consulta DEGRADARÁ SIGNIFICATIVAMENTE el desempeño de API, por lo cual se deben buscar estrategias alternativas.
+	 
+	 Para dar solucion a los problemas anteriores la lista de funciones del cine y la matriz de asientos de cada funcion son CopyOnWriteArrayList y el hashmap de los cines es ConcurrentHashMap 
+
+

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  *
@@ -18,7 +19,7 @@ import java.util.List;
 public class CinemaFunction {
     
     private Movie movie;
-    private List<List<Boolean>> seats=new ArrayList<>();
+    private CopyOnWriteArrayList<CopyOnWriteArrayList<Boolean>> seats=new CopyOnWriteArrayList<>();
     private String date;
     
     public CinemaFunction(){}
@@ -27,7 +28,7 @@ public class CinemaFunction {
         this.movie=movie;
         this.date=date;
         for (int i=0;i<7;i++){
-            List<Boolean> row= new ArrayList<>(Arrays.asList(new Boolean[12]));
+            CopyOnWriteArrayList<Boolean> row= new CopyOnWriteArrayList<>(Arrays.asList(new Boolean[12]));
             Collections.fill(row, Boolean.TRUE);
             this.seats.add(row);
         }
@@ -45,7 +46,7 @@ public class CinemaFunction {
         }
     }
     
-    public List<List<Boolean>> getSeats() {
+    public CopyOnWriteArrayList<CopyOnWriteArrayList<Boolean>> getSeats() {
         return this.seats;
     }
     

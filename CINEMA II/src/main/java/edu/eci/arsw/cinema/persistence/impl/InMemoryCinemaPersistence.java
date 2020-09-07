@@ -14,6 +14,8 @@ import edu.eci.arsw.cinema.persistence.CinemaPersitence;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
 /**
@@ -24,13 +26,13 @@ import java.util.stream.Collectors;
 @Service("inMemory")
 public class InMemoryCinemaPersistence implements CinemaPersitence{
     
-    private final Map<String,Cinema> cinemas=new HashMap<>();
+    private final ConcurrentHashMap<String,Cinema> cinemas=new ConcurrentHashMap<>();
 
     public InMemoryCinemaPersistence() {
         //load stub data
         String functionDate = "2018-12-18 15:30";
         String functionDate2 = "2013-12-18 15:30";
-        List<CinemaFunction> functions= new ArrayList<>();
+        CopyOnWriteArrayList<CinemaFunction> functions = new CopyOnWriteArrayList<>();
         CinemaFunction funct1 = new CinemaFunction(new Movie("SuperHeroes Movie","Action"),functionDate);
         CinemaFunction funct2 = new CinemaFunction(new Movie("The Night","Horror"),functionDate2);
         functions.add(funct1);
@@ -38,7 +40,7 @@ public class InMemoryCinemaPersistence implements CinemaPersitence{
         Cinema c=new Cinema("cinemaX",functions);
 
         functionDate = "2020-12-18 14:30";
-        functions= new ArrayList<>();
+        functions = new CopyOnWriteArrayList<>();
         funct1 = new CinemaFunction(new Movie("Spiderman","Drama"),functionDate);
         funct2 = new CinemaFunction(new Movie("IT","Adventure"),functionDate);
         functions.add(funct1);
@@ -47,7 +49,7 @@ public class InMemoryCinemaPersistence implements CinemaPersitence{
         cinemas.put("cinemaY",c2);
 
         functionDate = "2015-11-13 15:30";
-        functions= new ArrayList<>();
+        functions = new CopyOnWriteArrayList<>();
         funct1 = new CinemaFunction(new Movie("Deadpool","Funny"),functionDate);
         funct2 = new CinemaFunction(new Movie("The Avengers","Action"),functionDate);
         functions.add(funct1);
